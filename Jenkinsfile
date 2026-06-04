@@ -1,12 +1,12 @@
 pipeline {
 
-  agent any
+ agent any
 
-  stages {
+ stages {
 
   stage('Git Checkout') {
    steps {
-    git 'https://github.com/shinushiju/banking-app-1.git'
+    git 'https://github.com/shinushiju/banking-app.git'
    }
   }
 
@@ -21,31 +21,30 @@ pipeline {
     sh 'docker tag banking-app shinushiju/banking-app:${BUILD_NUMBER}'
    }
   }
-  
+
   stage('Push Image') {
    steps {
     withCredentials([usernamePassword(
-     credentialsId: 'dockerhub',
-     usernameVariable: 'USER',
-     passwordVariable: 'PASS')]) {
+      credentialsId: 'dockerhub',
+      usernameVariable: 'USER',
+      passwordVariable: 'PASS')]) {
 
-
-     sh '''
-     echo $PASS | docker login -u $USER --password-stdin
-     docker push shinushiju/banking-app:${BUILD_NUMBER}
-     '''
-     }
+      sh '''
+      echo $PASS | docker login -u $USER --password-stdin
+      docker push USERNAME/banking-app:${BUILD_NUMBER}
+      '''
+    }
    }
- }
+  }
 
- stage('Deploy EKS') {
+  stage('Deploy EKS') {
    steps {
-     sh '''
-     sed -i "s|IMAGE_PLACEHOLDER|shinushiju/banking-app:${BUILD_NUMBER}|g" deployment.yaml
-     kubectl apply -f deployment.yaml
-     kubectl apply -f service.yaml
-     '''
+      sh '''
+      sed -i "s|IMAGE_PLACEHOLDER|shinushiju/banking-app:${BUILD_NUMBER}|g" deployment.yaml
+      kubectl apply -f deployment.yaml
+      kubectl apply -f service.yaml
+      '''
    }
+  }
  }
-}
 }

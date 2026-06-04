@@ -6,7 +6,7 @@ pipeline {
 
   stage('Git Checkout') {
    steps {
-    git 'https://github.com/shinushiju/banking-app.git'
+    git 'https://github.com/shinushiju/banking-app-1.git'
    }
   }
 

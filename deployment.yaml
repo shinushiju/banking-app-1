@@ -2,25 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: banking-app-1
+  name: banking-app
 
 spec:
   replicas: 2
 
   selector:
     matchLabels:
-      app: banking-app-1
+      app: banking-app
 
   template:
     metadata:
       labels:
-        app: banking-app-1
+        app: banking-app
 
     spec:
       containers:
-      - name: banking-app-1
+      - name: banking-app
 
-        image: shinushiju/banking-app-1:v1
+        image: shinushiju/banking-app:v1
 
         ports:
         - containerPort: 5000 
